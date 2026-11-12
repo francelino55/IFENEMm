@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IF-ENEM · Plataforma de Estudos</title>
+<style>
+:root{
+  --verde:#1f8a3b; --verde-esc:#146a2b; --verde-cl:#e6f4ea; --verm:#c62828; --verm-cl:#fdecea;
+  --amar:#f5a623; --amar-cl:#fff4dc; --tx:#1d2a22; --tx2:#5a6b60; --bg:#f4f7f5; --card:#fff; --bd:#dbe4de;
+  --r:14px; --sombra:0 2px 10px rgba(20,60,35,.08);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}
+h1{font-size:1.6rem} h2{font-size:1.25rem} h3{font-size:1.05rem}
+a{color:var(--verde-esc)}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+header.top{background:var(--verde-esc);color:#fff;position:sticky;top:0;z-index:20}
+header.top .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.brand{font-weight:800;font-size:1.25rem;letter-spacing:.5px;color:#fff;text-decoration:none}
+.brand span{color:#ffd54f}
+.brand small{font-weight:500;font-size:.7rem;background:#ffd54f;color:#333;border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+nav.menu{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+nav.menu a,nav.menu button{color:#fff;text-decoration:none;padding:7px 12px;border-radius:8px;background:transparent;border:0;font-size:.95rem;position:relative}
+nav.menu a:hover,nav.menu button:hover{background:rgba(255,255,255,.15)}
+nav.menu a.on{background:rgba(255,255,255,.25);font-weight:700}
+.badge{background:#ff5252;color:#fff;border-radius:99px;font-size:.7rem;padding:1px 6px;margin-left:4px;font-weight:700}
+main{padding:22px 0 60px;min-height:70vh}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:18px;box-shadow:var(--sombra)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.btn{display:inline-block;background:var(--verde);color:#fff;border:0;border-radius:10px;padding:10px 18px;font-weight:600;text-decoration:none;text-align:center}
+.btn:hover{background:var(--verde-esc)}
+.btn.sec{background:#fff;color:var(--verde-esc);border:1.5px solid var(--verde)}
+.btn.sec:hover{background:var(--verde-cl)}
+.btn.perigo{background:var(--verm)} .btn.pq{padding:6px 12px;font-size:.88rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.muted{color:var(--tx2)} .small{font-size:.86rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sp{justify-content:space-between}
+label.f{display:block;font-weight:600;font-size:.9rem;margin:12px 0 4px}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=url],select{width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:10px;font:inherit;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--verde);box-shadow:0 0 0 3px rgba(31,138,59,.18)}
+.tabs{display:flex;gap:6px;margin-bottom:6px}
+.tabs button{flex:1;padding:9px;border:1.5px solid var(--bd);background:#fff;border-radius:10px;font-weight:600;color:var(--tx2)}
+.tabs button.on{border-color:var(--verde);background:var(--verde-cl);color:var(--verde-esc)}
+.auth{max-width:440px;margin:30px auto}
+.msg{padding:10px 14px;border-radius:10px;margin:12px 0;font-size:.92rem}
+.msg.err{background:var(--verm-cl);color:var(--verm)} .msg.ok{background:var(--verde-cl);color:var(--verde-esc)} .msg.warn{background:var(--amar-cl);color:#7a5200}
+.stat{text-align:center}.stat b{display:block;font-size:2rem;line-height:1.1}.stat span{color:var(--tx2);font-size:.85rem}
+.ok-c{color:var(--verde)} .er-c{color:var(--verm)}
+.sim-card{display:flex;flex-direction:column;gap:8px}
+.sim-card .num{font-size:3rem;font-weight:800;color:var(--verde);line-height:1}
+.bar{height:10px;background:#e8eeea;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--verde);border-radius:99px}
+.bar.r i{background:var(--verm)} .bar.a i{background:var(--amar)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--bd);vertical-align:middle}
+th{background:#f0f5f2;font-size:.8rem;text-transform:uppercase;letter-spacing:.4px;color:var(--tx2)}
+.tw{overflow-x:auto}
+/* simulado */
+.qbox{background:#fff;border:1px solid var(--bd);border-radius:var(--r);padding:14px;text-align:center}
+.qbox img{max-width:100%;height:auto;display:inline-block}
+.qmiss{padding:40px 10px;color:var(--tx2);border:2px dashed var(--bd);border-radius:10px}
+.opts{display:grid;gap:8px;margin:14px 0}
+.opt{display:flex;align-items:center;gap:12px;border:1.5px solid var(--bd);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;user-select:none}
+.opt:hover{border-color:var(--verde)}
+.opt input{width:20px;height:20px;accent-color:var(--verde);flex:none}
+.opt b{font-size:1.05rem;width:1.6em;height:1.6em;border-radius:50%;background:var(--verde-cl);color:var(--verde-esc);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.opt.sel{border-color:var(--verde);background:var(--verde-cl)}
+.qnav{display:flex;flex-wrap:wrap;gap:6px}
+.qnav button{width:38px;height:38px;border-radius:8px;border:1.5px solid var(--bd);background:#fff;font-weight:600}
+.qnav button.done{background:var(--verde-cl);border-color:var(--verde);color:var(--verde-esc)}
+.qnav button.cur{outline:3px solid var(--amar)}
+.simlay{display:grid;grid-template-columns:1fr 260px;gap:16px;align-items:start}
+@media(max-width:820px){.simlay{grid-template-columns:1fr}}
+.rv{border:1px solid var(--bd);border-radius:12px;margin:8px 0;background:#fff}
+.rv summary{padding:10px 14px;cursor:pointer;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.rv.ok{border-left:5px solid var(--verde)} .rv.er{border-left:5px solid var(--verm)}
+.rv .in{padding:0 14px 14px;text-align:center}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:.78rem;font-weight:600;background:#eef2ef;color:var(--tx2)}
+.pill.g{background:var(--verde-cl);color:var(--verde-esc)} .pill.r{background:var(--verm-cl);color:var(--verm)} .pill.y{background:var(--amar-cl);color:#7a5200}
+/* videos */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+.chip{border:1.5px solid var(--bd);background:#fff;border-radius:99px;padding:6px 14px;font-size:.9rem;text-decoration:none;color:var(--tx)}
+.chip:hover,.chip.on{border-color:var(--verde);background:var(--verde-cl);color:var(--verde-esc)}
+.vgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.vid{border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:#fff;cursor:pointer;text-align:left;padding:0;display:block;width:100%}
+.vid:hover{box-shadow:var(--sombra);border-color:var(--verde)}
+.vid .th{aspect-ratio:16/9;background:#222 center/cover;position:relative}
+.vid .th::after{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.2rem;text-shadow:0 2px 8px #000}
+.vid .t{padding:10px 12px;font-weight:600;font-size:.93rem}
+.bloco{margin-bottom:26px;scroll-margin-top:90px}
+.bloco h2 .em{font-size:1.4rem;margin-right:6px}
+.empty{padding:22px;text-align:center;color:var(--tx2);border:2px dashed var(--bd);border-radius:12px}
+/* modal / toast */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:#fff;border-radius:16px;max-width:860px;width:100%;max-height:92vh;overflow:auto;padding:18px}
+.modal.sm{max-width:440px}
+.ytf{aspect-ratio:16/9;width:100%;border:0;border-radius:10px;background:#000}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:10px;z-index:60;display:none;max-width:90vw}
+.notif{border-left:5px solid var(--verde);margin-bottom:10px}
+.notif.new{background:var(--amar-cl);border-left-color:var(--amar)}
+.qrow img{height:42px;border:1px solid var(--bd);border-radius:4px;background:#fff}
+.mini input,.mini select{padding:6px 8px;width:auto;min-width:70px}
+footer{text-align:center;color:var(--tx2);font-size:.82rem;padding:20px}
+@media print{header.top,footer,.noprint{display:none!important}body{background:#fff}.card{box-shadow:none}}
+@media(max-width:520px){h1{font-size:1.35rem}.card{padding:14px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#/" id="brand">IF-<span>ENEM</span></a>
+  <nav class="menu" id="menu"></nav>
+</div></header>
+<main><div class="wrap" id="app"></div></main>
+<footer>IF-ENEM · Preparação para o ENEM · IFPB</footer>
+<div id="toast"></div>
+
+<script>
+/* =====================================================================
+   ██  ÁREA DE CONFIGURAÇÃO  — É AQUI QUE VOCÊ ACRESCENTA O CONTEÚDO  ██
+   ===================================================================== */
+
+const CONFIG = {
+  /* Pasta onde ficam os PNG das questões (relativa a este arquivo HTML). */
+  pastaQuestoes: "",
+
+  /* Padrão do nome do arquivo. {n} = número da questão, {ano} = ano.
+     Exemplo gerado: questão-7-2023.png
+     (Se preferir sem acento, troque por "questao-{n}-{ano}.png" e renomeie os arquivos.) */
+  padraoNome: "questão-{n}-{ano}.PNG",
+
+  tamanhosSimulado: [15, 30, 45],   // tipos de simulado
+  sessaoMinutos: 15,                // RNF06 – logout por inatividade
+
+  /* Login inicial do administrador (pode ser trocado em Admin → Configurações). */
+  admin: { usuario: "admin", senha: "admin123" }
+};
+
+/* ---------------------------------------------------------------------
+   QUESTÕES  (45)   formato:  [ano, gabarito, assunto]
+   • O número da questão é a posição na lista (1ª linha = questão 1).
+   • ano       → usado para montar o nome do arquivo (questão-N-ANO.png)
+   • gabarito  → "A", "B", "C", "D" ou "E"
+   • assunto   → "id" de um bloco de vídeo-aulas (veja BLOCOS abaixo)
+   Tudo isto também pode ser editado no painel do administrador.
+   ATENÇÃO: os valores abaixo são PLACEHOLDERS; ajuste conforme suas imagens.
+   --------------------------------------------------------------------- */
+const QUESTOES_PADRAO = [
+  [2025, "C", "area"],   // questão 1
+  [2025, "E", "probabilidade"],   // questão 2
+  [2025, "C", "razao"],   // questão 3
+  [2025, "C", "porcentagem"],   // questão 4
+  [2025, "A", "estatistica"],   // questão 5
+  [2025, "D", "funcoes"],   // questão 6
+  [2025, "D", "volume"],   // questão 7
+  [2025, "B", "combinatoria"],   // questão 8
+  [2025, "D", "progressoes"],   // questão 9
+  [2025, "B", "equacoes"],   // questão 10
+  [2025, "C", "trigonometria"],   // questão 11
+  [2025, "A", "geral"],   // questão 12
+  [2025, "C", "area"],   // questão 13
+  [2025, "E", "probabilidade"],   // questão 14
+  [2025, "C", "razao"],   // questão 15
+  [2025, "B", "area"],   // questão 16
+  [2025, "D", "probabilidade"],   // questão 17
+  [2025, "D", "razao"],   // questão 18
+  [2025, "D", "porcentagem"],   // questão 19
+  [2025, "C", "estatistica"],   // questão 20
+  [2025, "A", "funcoes"],   // questão 21
+  [2025, "D", "volume"],   // questão 22
+  [2025, "E", "combinatoria"],   // questão 23
+  [2025, "E", "progressoes"],   // questão 24
+  [2025, "A", "equacoes"],   // questão 25
+  [2025, "B", "trigonometria"],   // questão 26
+  [2025, "B", "geral"],   // questão 27
+  [2025, "E", "area"],   // questão 28
+  [2025, "C", "probabilidade"],   // questão 29
+  [2025, "C", "razao"],   // questão 30
+  [2025, "D", "area"],   // questão 31
+  [2025, "A", "probabilidade"],   // questão 32
+  [2025, "B", "razao"],   // questão 33
+  [2025, "E", "porcentagem"],   // questão 34
+  [2025, "A", "estatistica"],   // questão 35
+  [2025, "D", "funcoes"],   // questão 36
+  [2025, "D", "volume"],   // questão 37
+  [2025, "E", "combinatoria"],   // questão 38
+  [2025, "B", "progressoes"],   // questão 39
+  [2025, "E", "equacoes"],   // questão 40
+  [2025, "A", "trigonometria"],   // questão 41
+  [2025, "A", "geral"],   // questão 42
+  [2025, "B", "area"],   // questão 43
+  [2025, "C", "probabilidade"],   // questão 44
+  [2025, "C", "razao"]   // questão 45
+];
+
+/* ---------------------------------------------------------------------
+   BLOCOS DE VÍDEO-AULAS (por conteúdo muito cobrado)
+   Cada vídeo: { titulo:"...", url:"https://www.youtube.com/watch?v=XXXX" }
+   Para criar um bloco novo, copie uma linha e mude o "id" e o "nome".
+   Também dá para gerenciar tudo no painel do administrador.
+   --------------------------------------------------------------------- */
+const BLOCOS_PADRAO = [
+  { id:"area",          nome:"Geometria Plana · Áreas",           icone:"📐", videos:[
+      // { titulo:"Áreas de figuras planas", url:"https://www.youtube.com/watch?v=COLE_AQUI" },
+  ]},
+  { id:"volume",        nome:"Geometria Espacial · Volumes",      icone:"🧊", videos:[] },
+  { id:"probabilidade", nome:"Probabilidade",                     icone:"🎲", videos:[] },
+  { id:"estatistica",   nome:"Estatística (média, mediana, moda)",icone:"📊", videos:[] },
+  { id:"razao",         nome:"Razão, Proporção e Regra de Três",  icone:"⚖️", videos:[] },
+  { id:"porcentagem",   nome:"Porcentagem e Juros",               icone:"💯", videos:[] },
+  { id:"funcoes",       nome:"Funções (1º e 2º grau)",            icone:"📈", videos:[] },
+  { id:"combinatoria",  nome:"Análise Combinatória",              icone:"🔢", videos:[] },
+  { id:"progressoes",   nome:"Progressões (PA e PG)",             icone:"🪜", videos:[] },
+  { id:"equacoes",      nome:"Equações e Sistemas",               icone:"🧮", videos:[] },
+  { id:"trigonometria", nome:"Trigonometria",                     icone:"📏", videos:[] },
+  { id:"geral",         nome:"Matemática Geral",                  icone:"🧠", videos:[] }
+];
+
+/* =====================================================================
+   ██  FIM DA CONFIGURAÇÃO — o restante é o funcionamento do sistema  ██
+   ===================================================================== */
+
+/* ---------- Utilidades ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const hoje = () => new Date().toISOString().slice(0, 10);
+const fmtData = iso => new Date(iso).toLocaleString("pt-BR", {dateStyle:"short", timeStyle:"short"});
+const LETRAS = ["A","B","C","D","E"];
+
+/* ---------- Armazenamento (localStorage com fallback em memória) ---------- */
+const mem = {};
+const Store = {
+  get(k, def){ try{ const v = localStorage.getItem("ifenem:"+k); return v ? JSON.parse(v) : def; }catch(e){ return k in mem ? mem[k] : def; } },
+  set(k, v){ try{ localStorage.setItem("ifenem:"+k, JSON.stringify(v)); }catch(e){ mem[k] = v; } }
+};
+async function hash(txt){
+  try{
+    const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("ifenem|" + txt));
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2,"0")).join("");
+  }catch(e){ let h = 5381; for(const c of "ifenem|"+txt) h = ((h<<5)+h) ^ c.charCodeAt(0); return "f"+(h>>>0).toString(16); }
+}
+
+/* ---------- Dados (com ajustes feitos pelo admin) ---------- */
+let QS = [], BL = [];
+function carregarDados(){
+  const ov = Store.get("overrides", {});
+  const mapOv = {}; (ov.questoes || []).forEach(q => mapOv[q.n] = q);
+  QS = QUESTOES_PADRAO.map((a, i) => ({ n:i+136, ano:a[0], gab:a[1], assunto:a[2], ...(mapOv[i+136] || {}) }));
+  BL = ov.blocos || JSON.parse(JSON.stringify(BLOCOS_PADRAO));
+}
+function salvarDados(){ Store.set("overrides", { questoes: QS, blocos: BL }); }
+const nomeArq = q => CONFIG.padraoNome.replace("{n}", q.n).replace("{ano}", q.ano);
+const urlImg = q => encodeURI(CONFIG.pastaQuestoes + nomeArq(q));
+const bloco = id => BL.find(b => b.id === id);
+const nomeAssunto = id => (bloco(id) || {nome:"Sem classificação"}).nome;
+
+function ytId(url){
+  const m = String(url||"").match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/|\/live\/)([\w-]{11})/);
+  return m ? m[1] : null;
+}
+
+/* ---------- Sessão / inatividade (RNF06) ---------- */
+let sessao = Store.get("sessao", null);
+let ultimaAtividade = Date.now();
+let sim = null; // simulado em andamento (só em memória: RN06 exceção)
+["click","keydown","touchstart","mousemove"].forEach(ev => document.addEventListener(ev, () => ultimaAtividade = Date.now(), {passive:true}));
+setInterval(() => {
+  if(sessao && Date.now() - ultimaAtividade > CONFIG.sessaoMinutos * 60000){
+    sair(`Sessão encerrada após ${CONFIG.sessaoMinutos} minutos de inatividade.` + (sim ? " As respostas não enviadas foram descartadas." : ""));
+  }
+}, 5000);
+function sair(aviso){
+  sessao = null; sim = null; Store.set("sessao", null);
+  fechaModal(); sessionStorage.setItem("aviso", aviso || "");
+  location.hash = "#/login"; render();
+}
+const usuarios = () => Store.get("usuarios", []);
+const resultados = () => Store.get("resultados", []);
+const notifs = () => Store.get("notifs", []);
+const usuarioAtual = () => sessao && sessao.role === "aluno" ? usuarios().find(u => u.id === sessao.id) : null;
+const ehAdmin = () => sessao && sessao.role === "admin";
+
+/* ---------- UI helpers ---------- */
+function toast(t){ const el = $("#toast"); el.textContent = t; el.style.display = "block"; clearTimeout(toast.t); toast.t = setTimeout(() => el.style.display = "none", 3200); }
+function modal(html, cls=""){ fechaModal(); const d = document.createElement("div"); d.className = "modal-bg"; d.id = "modal";
+  d.innerHTML = `<div class="modal ${cls}" role="dialog" aria-modal="true">${html}</div>`;
+  d.addEventListener("click", e => { if(e.target === d) fechaModal(); }); document.body.appendChild(d); }
+function fechaModal(){ const m = $("#modal"); if(m) m.remove(); }
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+
+/* ---------- Estatísticas ---------- */
+function statsAluno(uidv){
+  const rs = resultados().filter(r => r.userId === uidv);
+  const t = { simulados: rs.length, resp: 0, ac: 0, er: 0, topicos: {} };
+  rs.forEach(r => r.itens.forEach(i => {
+    t.resp++; i.ok ? t.ac++ : t.er++;
+    const x = t.topicos[i.assunto] ||= { total:0, ac:0, er:0 };
+    x.total++; i.ok ? x.ac++ : x.er++;
+  }));
+  return t;
+}
+function topicosDificeis(topicos){
+  return Object.entries(topicos).filter(([,v]) => v.er > 0)
+    .map(([id,v]) => ({ id, ...v, taxa: v.er / v.total }))
+    .sort((a,b) => b.taxa - a.taxa || b.er - a.er);
+}
+/* RN11/RN12: vídeos sugeridos (apenas links operacionais) */
+function sugestoes(topicos, max=6){
+  const dif = topicosDificeis(topicos), lista = [];
+  dif.forEach(d => { const b = bloco(d.id); if(b) b.videos.filter(v => v.ok !== false && ytId(v.url)).forEach(v => lista.push({ ...v, bloco:b, motivo:d })); });
+  if(lista.length) return { geral:false, lista: lista.slice(0, max) };
+  const g = []; // sem erros → recomendações gerais
+  BL.forEach(b => b.videos.filter(v => v.ok !== false && ytId(v.url)).slice(0,1).forEach(v => g.push({ ...v, bloco:b })));
+  return { geral:true, lista: g.slice(0, max) };
+}
+function cardVideo(v){
+  const id = ytId(v.url);
+  return `<button class="vid" onclick="abrirVideo('${id}','${esc(v.titulo).replace(/'/g,"&#39;")}')">
+    <div class="th" style="background-image:url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')"></div>
+    <div class="t">${esc(v.titulo)}${v.bloco ? `<div class="muted small">${v.bloco.icone} ${esc(v.bloco.nome)}</div>` : ""}</div></button>`;
+}
+function abrirVideo(id, titulo){
+  modal(`<div class="row sp" style="margin-bottom:10px"><h3 style="margin:0">${titulo}</h3><button class="btn sec pq" onclick="fechaModal()">Fechar ✕</button></div>
+    <iframe class="ytf" src="https://www.youtube-nocookie.com/embed/${id}?rel=0" allowfullscreen allow="accelerometer; encrypted-media; picture-in-picture"></iframe>
+    <p class="small muted">Não carregou? <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${id}">Abrir no YouTube ↗</a></p>`);
+}
+
+/* ---------- Menu ---------- */
+function montaMenu(){
+  const m = $("#menu"), h = location.hash || "#/";
+  const on = p => h.startsWith(p) ? "on" : "";
+  if(!sessao){ m.innerHTML = ""; return; }
+  if(ehAdmin()){
+    m.innerHTML = ["visao:Visão geral","estudantes:Estudantes","questoes:Questões","videos:Vídeo-aulas","config:Configurações"]
+      .map(x => { const [k,t] = x.split(":"); return `<a class="${on('#/admin/'+k)}" href="#/admin/${k}">${t}</a>`; }).join("")
+      + `<button onclick="sair()">Sair</button>`;
+    $("#brand").innerHTML = `IF-<span>ENEM</span><small>ADMIN</small>`;
+  } else {
+    const n = notifs().filter(x => x.userId === sessao.id && !x.lida).length;
+    m.innerHTML = `<a class="${on('#/home')}" href="#/home">Início</a>
+      <a class="${on('#/simulado')}" href="#/simulados">Simulados</a>
+      <a class="${on('#/videos')}" href="#/videos">Vídeo-aulas</a>
+      <a class="${on('#/desempenho')}" href="#/desempenho">Desempenho</a>
+      <a class="${on('#/notificacoes')}" href="#/notificacoes">Avisos${n ? `<span class="badge">${n}</span>` : ""}</a>
+      <button onclick="sair()">Sair</button>`;
+    $("#brand").innerHTML = `IF-<span>ENEM</span>`;
+  }
+}
+
+/* ---------- Roteador ---------- */
+function render(){
+  carregarDados();
+  let h = location.hash.replace(/^#/, "") || "/";
+  const [, r1, r2, r3] = h.split("/");
+  const app = $("#app");
+  if(!sessao){ if(r1 !== "cadastro") h = "/login"; }
+  else if(ehAdmin() && r1 !== "admin") { location.hash = "#/admin/visao"; return; }
+  else if(!ehAdmin() && (r1 === "login" || r1 === "cadastro" || r1 === "" || r1 === "admin")) { location.hash = "#/home"; return; }
+  montaMenu();
+  const R = !sessao ? (r1 === "cadastro" ? vCadastro : vLogin)
+    : ehAdmin() ? ({visao:aVisao, estudantes:aEstudantes, questoes:aQuestoes, videos:aVideos, config:aConfig}[r2] || aVisao)
+    : ({home:vHome, simulados:vSimulados, simulado:vSimulado, resultado:vResultado, videos:vVideos, desempenho:vDesempenho, notificacoes:vNotificacoes}[r1] || vHome);
+  app.innerHTML = R(r2, r3);
+  window.scrollTo(0, 0);
+  if(R === vNotificacoes) marcarLidas();
+}
+window.addEventListener("hashchange", render);
+window.addEventListener("beforeunload", e => { if(sim){ e.preventDefault(); e.returnValue = ""; } });
+
+/* =====================================================================
+   INTERFACE DO ESTUDANTE
+   ===================================================================== */
+function vLogin(){
+  const av = sessionStorage.getItem("aviso"); sessionStorage.removeItem("aviso");
+  const modo = vLogin.modo || "aluno";
+  return `<div class="card auth">
+    <h1>Entrar no IF-<span style="color:var(--verde)">ENEM</span></h1>
+    <p class="muted">Simulados de Matemática e suas Tecnologias com vídeo-aulas sugeridas.</p>
+    ${av ? `<div class="msg warn">${esc(av)}</div>` : ""}
+    <div class="tabs"><button class="${modo==='aluno'?'on':''}" onclick="vLogin.modo='aluno';render()">Estudante</button>
+      <button class="${modo==='admin'?'on':''}" onclick="vLogin.modo='admin';render()">Administrador</button></div>
+    <form onsubmit="return fazLogin(event)">
+      <label class="f" for="lg">${modo==='admin' ? "Usuário" : "E-mail"}</label>
+      <input id="lg" type="${modo==='admin' ? 'text' : 'email'}" required autocomplete="username">
+      <label class="f" for="ls">Senha</label>
+      <input id="ls" type="password" required autocomplete="current-password">
+      <div id="lerr"></div>
+      <button class="btn" style="width:100%;margin-top:16px">Entrar</button>
+    </form>
+    ${modo==='aluno' ? `<p class="small" style="text-align:center">Ainda não tem conta? <a href="#/cadastro">Cadastre-se</a></p>` : ""}
+  </div>`;
+}
+async function fazLogin(e){
+  e.preventDefault();
+  const l = $("#lg").value.trim(), s = $("#ls").value, err = $("#lerr");
+  if(vLogin.modo === "admin"){
+    const adm = Store.get("admin", null);
+    const ok = l === CONFIG.admin.usuario && (adm ? (await hash(s)) === adm.hash : s === CONFIG.admin.senha);
+    if(!ok){ err.innerHTML = `<div class="msg err">Usuário ou senha de administrador inválidos.</div>`; return false; }
+    sessao = { role:"admin" };
+  } else {
+    const u = usuarios().find(x => x.email === l.toLowerCase());
+    if(!u || u.hash !== await hash(s)){ err.innerHTML = `<div class="msg err">E-mail ou senha inválidos.</div>`; return false; }
+    sessao = { role:"aluno", id:u.id };
+  }
+  Store.set("sessao", sessao); ultimaAtividade = Date.now();
+  location.hash = ehAdmin() ? "#/admin/visao" : "#/home"; render(); return false;
+}
+function vCadastro(){
+  return `<div class="card auth">
+    <h1>Criar conta</h1>
+    <form onsubmit="return fazCadastro(event)">
+      <label class="f" for="cn">Nome completo *</label><input id="cn" type="text" required>
+      <label class="f" for="ce">E-mail *</label><input id="ce" type="email" required>
+      <label class="f" for="cd">Matrícula ou CPF *</label><input id="cd" type="text" required>
+      <label class="f" for="cs">Senha * (mín. 6 caracteres)</label><input id="cs" type="password" minlength="6" required autocomplete="new-password">
+      <label class="f" for="cs2">Confirmar senha *</label><input id="cs2" type="password" required autocomplete="new-password">
+      <div id="cerr"></div>
+      <button class="btn" style="width:100%;margin-top:16px">Cadastrar</button>
+    </form>
+    <p class="small" style="text-align:center">Já tem conta? <a href="#/login">Entrar</a></p>
+  </div>`;
+}
+async function fazCadastro(e){
+  e.preventDefault();
+  const nome = $("#cn").value.trim(), email = $("#ce").value.trim().toLowerCase(), doc = $("#cd").value.replace(/[\s.\-\/]/g,"").toLowerCase(), s = $("#cs").value, err = $("#cerr");
+  const erro = m => { err.innerHTML = `<div class="msg err">${m}</div>`; return false; };
+  if(!nome || !email || !doc || !s) return erro("Preencha todos os campos obrigatórios.");          // RN02
+  if(s.length < 6) return erro("A senha deve ter ao menos 6 caracteres.");
+  if(s !== $("#cs2").value) return erro("As senhas não conferem.");
+  const us = usuarios();
+  if(us.some(u => u.email === email || u.doc === doc)) return erro("Já existe uma conta com este e-mail ou documento."); // RN01
+  const u = { id:uid(), nome, email, doc, hash:await hash(s), criado:new Date().toISOString() };
+  us.push(u); Store.set("usuarios", us);
+  sessao = { role:"aluno", id:u.id }; Store.set("sessao", sessao); ultimaAtividade = Date.now();
+  location.hash = "#/home"; render(); toast("Conta criada com sucesso!"); return false;
+}
+
+function vHome(){
+  const u = usuarioAtual(); if(!u){ sair(); return ""; }
+  const st = statsAluno(u.id), rs = resultados().filter(r => r.userId === u.id);
+  const ult = rs[rs.length - 1], sg = sugestoes(st.topicos, 3);
+  return `<h1>Olá, ${esc(u.nome.split(" ")[0])}! 👋</h1>
+  <p class="muted">Bons estudos! Escolha por onde começar.</p>
+  <div class="grid g3" style="margin:18px 0">
+    <a class="card stat" href="#/simulados" style="text-decoration:none;color:inherit"><b>📝</b><span>Fazer um simulado</span></a>
+    <a class="card stat" href="#/videos" style="text-decoration:none;color:inherit"><b>🎬</b><span>Assistir vídeo-aulas</span></a>
+    <a class="card stat" href="#/desempenho" style="text-decoration:none;color:inherit"><b>📈</b><span>Ver meu desempenho</span></a>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h2>Resumo</h2>
+      <div class="grid g3"><div class="stat"><b>${st.simulados}</b><span>simulados</span></div>
+      <div class="stat"><b class="ok-c">${st.ac}</b><span>acertos</span></div><div class="stat"><b class="er-c">${st.er}</b><span>erros</span></div></div>
+      ${ult ? `<p class="small muted" style="margin-bottom:0">Último: simulado de ${ult.total} questões em ${fmtData(ult.data)} — ${ult.ac}/${ult.total} acertos. <a href="#/resultado/${ult.id}">Ver</a></p>` : `<p class="muted small">Você ainda não fez nenhum simulado.</p>`}
+    </div>
+    <div class="card"><h2>${sg.geral ? "Vídeo-aulas para começar" : "Sugeridas para você"}</h2>
+      ${sg.lista.length ? `<div class="vgrid" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">${sg.lista.map(cardVideo).join("")}</div>` : `<div class="empty">Nenhuma vídeo-aula disponível ainda.</div>`}
+    </div>
+  </div>`;
+}
+
+function vSimulados(){
+  return `<h1>Simulados</h1>
+  <p class="muted">Matemática e suas Tecnologias · questões do ENEM. Cada questão tem cinco alternativas (A–E). Sugestão de ritmo: ~3 min por questão.</p>
+  <div class="grid g3">${CONFIG.tamanhosSimulado.map(n => `
+    <div class="card sim-card"><div class="num">${n}</div><h3>Simulado de ${n} questões</h3>
+      <p class="muted small" style="flex:1">${n<=15?"Rápido, ideal para o dia a dia.":n<=30?"Intermediário, para treinar a resistência.":"Completo, usa todo o banco de questões."} Duração sugerida: ${n*3} min.</p>
+      <button class="btn" onclick="iniciarSimulado(${n})">Começar</button></div>`).join("")}
+  </div>`;
+}
+function iniciarSimulado(n){
+  let pool = QS.map(q => q.n);
+  if(n < pool.length) pool = pool.sort(() => Math.random() - .5).slice(0, n).sort((a,b) => a-b); // sorteio sem repetir
+  sim = { tamanho:n, ids:pool, resp:{}, idx:0, inicio:Date.now() };
+  location.hash = "#/simulado"; render();
+}
+function vSimulado(){
+  if(!sim){ location.hash = "#/simulados"; return ""; }
+  const q = QS.find(x => x.n === sim.ids[sim.idx]), total = sim.ids.length, marcada = sim.resp[q.n];
+  const resp = Object.keys(sim.resp).length;
+  return `<div class="row sp" style="margin-bottom:10px"><h2 style="margin:0">Simulado de ${total} questões</h2>
+      <span class="pill y">Respondidas: ${resp}/${total}</span></div>
+  <div class="bar" style="margin-bottom:14px"><i style="width:${pct(resp,total)}%"></i></div>
+  <div class="simlay"><div>
+    <div class="row sp small muted" style="margin-bottom:6px"><b>Questão ${sim.idx+1} de ${total}</b><span>Enem ${q.ano} · nº ${q.n}</span></div>
+    <div class="qbox"><img src="${urlImg(q)}" alt="Enunciado da questão ${sim.idx+1}" onerror="this.outerHTML='<div class=qmiss>🖼️ Imagem não encontrada:<br><b>${esc(CONFIG.pastaQuestoes+nomeArq(q))}</b></div>'"></div>
+    <div class="opts" role="radiogroup" aria-label="Alternativas">
+      ${LETRAS.map(L => `<label class="opt ${marcada===L?'sel':''}"><input type="radio" name="alt" ${marcada===L?'checked':''} onchange="marcar('${L}')"><b>${L.toLowerCase()}</b> Alternativa (${L.toLowerCase()})</label>`).join("")}
+    </div>
+    <div class="row sp">
+      <button class="btn sec" ${sim.idx===0?'disabled':''} onclick="navSim(${sim.idx-1})">← Anterior</button>
+      ${marcada ? `<button class="btn sec pq" onclick="marcar(null)">Limpar resposta</button>` : ""}
+      ${sim.idx < total-1 ? `<button class="btn" onclick="navSim(${sim.idx+1})">Próxima →</button>` : `<button class="btn" onclick="confirmaFim()">Finalizar ✔</button>`}
+    </div></div>
+    <aside class="card"><h3>Navegação</h3>
+      <div class="qnav">${sim.ids.map((id,i) => `<button class="${sim.resp[id]?'done':''} ${i===sim.idx?'cur':''}" onclick="navSim(${i})" aria-label="Questão ${i+1}">${i+1}</button>`).join("")}</div>
+      <hr style="border:0;border-top:1px solid var(--bd);margin:14px 0">
+      <button class="btn" style="width:100%" onclick="confirmaFim()">Finalizar simulado</button>
+      <button class="btn sec pq" style="width:100%;margin-top:8px" onclick="cancelaSim()">Abandonar</button>
+    </aside></div>`;
+}
+function marcar(L){ const id = sim.ids[sim.idx]; if(L) sim.resp[id] = L; else delete sim.resp[id]; render(); }
+function navSim(i){ sim.idx = Math.max(0, Math.min(sim.ids.length-1, i)); render(); }
+function cancelaSim(){ modal(`<h3>Abandonar simulado?</h3><p>As respostas serão descartadas e nada será registrado.</p>
+  <div class="row"><button class="btn perigo" onclick="sim=null;fechaModal();location.hash='#/simulados'">Abandonar</button><button class="btn sec" onclick="fechaModal()">Continuar</button></div>`, "sm"); }
+function confirmaFim(){
+  const falta = sim.ids.length - Object.keys(sim.resp).length;
+  modal(`<h3>Enviar respostas?</h3>
+    ${falta ? `<div class="msg warn">Você deixou <b>${falta}</b> questão(ões) em branco. Elas contarão como erro.</div>` : `<p>Você respondeu todas as questões.</p>`}
+    <p class="small muted">Após o envio, o resultado fica registrado e não poderá ser alterado.</p>
+    <div class="row"><button class="btn" onclick="finalizaSim()">Confirmar envio</button><button class="btn sec" onclick="fechaModal()">Voltar</button></div>`, "sm");
+}
+function finalizaSim(){ // RN06, RN07, RN08, RN09
+  const u = usuarioAtual(); if(!u || !sim) return;
+  const itens = sim.ids.map(id => { const q = QS.find(x => x.n === id), m = sim.resp[id] || null;
+    return { n:q.n, ano:q.ano, assunto:q.assunto, marcada:m, gab:q.gab, ok:m === q.gab }; });
+  const ac = itens.filter(i => i.ok).length;
+  const r = { id:uid(), userId:u.id, data:new Date().toISOString(), total:itens.length, ac, er:itens.length-ac,
+              branco:itens.filter(i => !i.marcada).length, seg:Math.round((Date.now()-sim.inicio)/1000), itens };
+  const rs = resultados(); rs.push(r); Store.set("resultados", rs);
+  // RN13: notificações só quando há erros
+  if(r.er > 0){
+    const dif = topicosDificeis(statsAluno(u.id).topicos).slice(0,3), ns = notifs();
+    ns.push({ id:uid(), userId:u.id, data:r.data, lida:false, titulo:`Resultado: ${ac}/${r.total} acertos`,
+      texto:`Você concluiu o simulado de ${r.total} questões. Maior dificuldade: ${dif.map(d => nomeAssunto(d.id)).join(", ")}.`, link:`#/resultado/${r.id}` });
+    if(sugestoes(statsAluno(u.id).topicos).lista.length && !sugestoes(statsAluno(u.id).topicos).geral)
+      ns.push({ id:uid(), userId:u.id, data:r.data, lida:false, titulo:"Vídeo-aulas sugeridas para você",
+        texto:"Selecionamos vídeo-aulas sobre os assuntos em que você mais errou.", link:"#/videos" });
+    Store.set("notifs", ns);
+  }
+  sim = null; fechaModal(); location.hash = "#/resultado/" + r.id;
+}
+
+function barraTopicos(topicos){
+  const l = Object.entries(topicos).map(([id,v]) => ({ id, ...v, ap:pct(v.ac, v.total) })).sort((a,b) => a.ap - b.ap);
+  if(!l.length) return `<div class="empty">Sem dados ainda.</div>`;
+  return l.map(t => `<div style="margin:10px 0"><div class="row sp small"><b>${esc(nomeAssunto(t.id))}</b><span>${t.ac}/${t.total} · ${t.ap}%</span></div>
+    <div class="bar ${t.ap<50?'r':t.ap<70?'a':''}"><i style="width:${t.ap}%"></i></div></div>`).join("");
+}
+function vResultado(id){
+  const u = usuarioAtual(), r = resultados().find(x => x.id === id && u && x.userId === u.id); // RN16
+  if(!r) return `<div class="msg err">Resultado não encontrado.</div>`;
+  const tp = {}; r.itens.forEach(i => { const x = tp[i.assunto] ||= {total:0,ac:0,er:0}; x.total++; i.ok ? x.ac++ : x.er++; });
+  const sg = r.er ? sugestoes(tp, 4) : null;
+  const q = n => QS.find(z => z.n === n);
+  return `<div class="row sp"><h1>Resultado do simulado</h1><a class="btn sec noprint" href="#/simulados">Novo simulado</a></div>
+  <p class="muted">${fmtData(r.data)} · ${r.total} questões · tempo: ${Math.floor(r.seg/60)} min ${r.seg%60}s</p>
+  <div class="grid g4" style="margin:14px 0">
+    <div class="card stat"><b class="ok-c">${r.ac}</b><span>acertos</span></div>
+    <div class="card stat"><b class="er-c">${r.er}</b><span>erros</span></div>
+    <div class="card stat"><b>${r.branco}</b><span>em branco</span></div>
+    <div class="card stat"><b>${pct(r.ac,r.total)}%</b><span>aproveitamento</span></div></div>
+  <div class="grid g2">
+    <div class="card"><h2>Desempenho por assunto</h2>${barraTopicos(tp)}</div>
+    <div class="card"><h2>${r.er ? "Vídeo-aulas sugeridas" : "Parabéns! 🎉"}</h2>
+      ${r.er ? (sg.lista.length ? `<div class="vgrid" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">${sg.lista.map(cardVideo).join("")}</div>` : `<div class="empty">Ainda não há vídeo-aulas cadastradas para esses assuntos.</div>`)
+        : `<p>Você acertou tudo! Continue praticando com um simulado maior.</p>`}</div></div>
+  <h2 style="margin-top:22px">Gabarito comentado</h2>
+  ${r.itens.map((i,k) => `<details class="rv ${i.ok?'ok':'er'}"><summary><b>${k+1}.</b>
+      <span class="pill ${i.ok?'g':'r'}">${i.ok?'Acertou':(i.marcada?'Errou':'Em branco')}</span>
+      <span>Sua resposta: <b>${i.marcada||'—'}</b> · Gabarito: <b>${i.gab}</b></span><span class="pill">${esc(nomeAssunto(i.assunto))}</span></summary>
+      <div class="in">${q(i.n) ? `<img style="max-width:100%" loading="lazy" src="${urlImg({n:i.n, ano:i.ano})}" alt="Questão ${i.n}" onerror="this.outerHTML='<div class=qmiss>Imagem não encontrada</div>'">` : ""}</div></details>`).join("")}`;
+}
+
+function vVideos(sel){
+  const u = usuarioAtual(), st = u ? statsAluno(u.id) : {topicos:{}}, dif = topicosDificeis(st.topicos).map(d => d.id);
+  const vis = b => b.videos.filter(v => v.ok !== false && ytId(v.url)); // RN12
+  return `<h1>Vídeo-aulas</h1><p class="muted">Conteúdos mais cobrados no ENEM, organizados por assunto. Clique no vídeo para assistir.</p>
+  <div class="chips">${BL.map(b => `<a class="chip ${sel===b.id?'on':''}" href="#/videos/${b.id}">${b.icone} ${esc(b.nome)}</a>`).join("")}
+    ${sel ? `<a class="chip" href="#/videos">Ver todos</a>` : ""}</div>
+  ${BL.filter(b => !sel || b.id === sel).map(b => { const vs = vis(b); return `<section class="bloco" id="b-${b.id}">
+    <h2><span class="em">${b.icone}</span>${esc(b.nome)} ${dif.includes(b.id) ? `<span class="pill r">recomendado para você</span>` : ""}</h2>
+    ${vs.length ? `<div class="vgrid">${vs.map(cardVideo).join("")}</div>` : `<div class="empty">Vídeo-aulas deste assunto em breve.</div>`}</section>`; }).join("")}`;
+}
+
+function vDesempenho(){
+  const u = usuarioAtual(), st = statsAluno(u.id), rs = resultados().filter(r => r.userId === u.id).reverse();
+  const dif = topicosDificeis(st.topicos), sg = sugestoes(st.topicos, 4);
+  return `<div class="row sp"><h1>Meu desempenho</h1><button class="btn sec noprint" onclick="window.print()">🖨️ Imprimir relatório</button></div>
+  <p class="muted">Relatório de ${esc(u.nome)} · gerado em ${fmtData(new Date().toISOString())}</p>
+  <div class="grid g4" style="margin:14px 0">
+    <div class="card stat"><b>${st.simulados}</b><span>simulados</span></div>
+    <div class="card stat"><b>${st.resp}</b><span>questões respondidas</span></div>
+    <div class="card stat"><b class="ok-c">${st.ac}</b><span>acertos</span></div>
+    <div class="card stat"><b class="er-c">${st.er}</b><span>erros</span></div></div>
+  <div class="grid g2">
+    <div class="card"><h2>Aproveitamento por assunto</h2>${barraTopicos(st.topicos)}</div>
+    <div class="card"><h2>Maiores dificuldades</h2>
+      ${dif.length ? `<ol style="padding-left:20px">${dif.slice(0,5).map(d => `<li><b>${esc(nomeAssunto(d.id))}</b> — ${d.er} erro(s) em ${d.total} (${pct(d.er,d.total)}% de erro)</li>`).join("")}</ol>` : `<div class="empty">Nenhuma dificuldade identificada ainda.</div>`}
+      <h3 style="margin-top:14px">Vídeo-aulas sugeridas</h3>
+      ${sg.lista.length ? `<div class="vgrid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">${sg.lista.slice(0,4).map(cardVideo).join("")}</div>` : `<p class="muted small">Sem vídeos disponíveis.</p>`}</div></div>
+  <div class="card" style="margin-top:16px"><h2>Histórico de simulados</h2>
+    ${rs.length ? `<div class="tw"><table><tr><th>Data</th><th>Tipo</th><th>Acertos</th><th>Erros</th><th>%</th><th class="noprint"></th></tr>
+    ${rs.map(r => `<tr><td>${fmtData(r.data)}</td><td>${r.total} questões</td><td class="ok-c">${r.ac}</td><td class="er-c">${r.er}</td><td>${pct(r.ac,r.total)}%</td><td class="noprint"><a href="#/resultado/${r.id}">Detalhes</a></td></tr>`).join("")}</table></div>` : `<div class="empty">Você ainda não realizou simulados. <a href="#/simulados">Começar agora</a></div>`}</div>`;
+}
+
+function vNotificacoes(){
+  const u = usuarioAtual(), ns = notifs().filter(n => n.userId === u.id).reverse();
+  window.__novas = new Set(ns.filter(n => !n.lida).map(n => n.id));
+  return `<h1>Avisos e lembretes</h1>
+  ${ns.length ? ns.map(n => `<div class="card notif ${n.lida?'':'new'}"><div class="row sp"><b>${esc(n.titulo)}</b><span class="small muted">${fmtData(n.data)}</span></div>
+      <p style="margin:6px 0">${esc(n.texto)}</p>${n.link ? `<a href="${n.link}">Ver mais →</a>` : ""}</div>`).join("")
+   : `<div class="empty">Nenhum aviso por enquanto. Conclua um simulado para receber sugestões de estudo.</div>`}`;
+}
+function marcarLidas(){ // RN14
+  const ns = notifs(); let mudou = false;
+  ns.forEach(n => { if(sessao && n.userId === sessao.id && !n.lida){ n.lida = true; mudou = true; } });
+  if(mudou){ Store.set("notifs", ns); montaMenu(); }
+}
+
+/* =====================================================================
+   INTERFACE DO ADMINISTRADOR
+   ===================================================================== */
+function aVisao(){
+  const us = usuarios(), rs = resultados(), tp = {};
+  rs.forEach(r => r.itens.forEach(i => { const x = tp[i.assunto] ||= {total:0,ac:0,er:0}; x.total++; i.ok ? x.ac++ : x.er++; }));
+  const media = rs.length ? Math.round(rs.reduce((s,r) => s + r.ac/r.total, 0) / rs.length * 100) : 0;
+  const semVid = BL.filter(b => !b.videos.length).length, hoj = new Date(), vencidos = [];
+  BL.forEach(b => b.videos.forEach(v => { if(!v.verificado || (hoj - new Date(v.verificado)) / 864e5 > 30) vencidos.push(v); }));
+  return `<h1>Painel do administrador</h1>
+  <div class="grid g4" style="margin:14px 0">
+    <div class="card stat"><b>${us.length}</b><span>estudantes</span></div>
+    <div class="card stat"><b>${rs.length}</b><span>simulados realizados</span></div>
+    <div class="card stat"><b>${media}%</b><span>média de acertos</span></div>
+    <div class="card stat"><b>${BL.reduce((s,b)=>s+b.videos.length,0)}</b><span>vídeo-aulas</span></div></div>
+  ${vencidos.length ? `<div class="msg warn">🔗 ${vencidos.length} link(s) sem verificação há mais de 30 dias (RNF11). Abra <a href="#/admin/videos">Vídeo-aulas</a> para conferir.</div>` : ""}
+  ${semVid ? `<div class="msg warn">${semVid} bloco(s) ainda sem vídeo-aulas.</div>` : ""}
+  <div class="grid g2"><div class="card"><h2>Assuntos com mais erros (todos os alunos)</h2>${barraTopicos(tp)}</div>
+  <div class="card"><h2>Atalhos</h2><div class="row"><a class="btn" href="#/admin/questoes">Gerenciar questões</a><a class="btn sec" href="#/admin/videos">Gerenciar vídeo-aulas</a><a class="btn sec" href="#/admin/config">Backup / Config</a></div></div></div>`;
+}
+function aEstudantes(sel){
+  const us = usuarios(), rs = resultados();
+  const det = id => { const u = us.find(x => x.id === id); if(!u) return ""; const st = statsAluno(id);
+    return `<div class="card" style="margin-bottom:16px"><div class="row sp"><h2 style="margin:0">${esc(u.nome)}</h2><a href="#/admin/estudantes">Fechar ✕</a></div>
+      <p class="muted small">${esc(u.email)} · doc: ${esc(u.doc)} · cadastro: ${fmtData(u.criado)}</p>
+      <div class="grid g4"><div class="stat"><b>${st.simulados}</b><span>simulados</span></div><div class="stat"><b>${st.resp}</b><span>respondidas</span></div>
+      <div class="stat"><b class="ok-c">${st.ac}</b><span>acertos</span></div><div class="stat"><b class="er-c">${st.er}</b><span>erros</span></div></div>
+      <h3 style="margin-top:14px">Por assunto</h3>${barraTopicos(st.topicos)}</div>`; };
+  return `<h1>Estudantes</h1>${sel ? det(sel) : ""}
+  <div class="card tw">${us.length ? `<table><tr><th>Nome</th><th>E-mail</th><th>Simulados</th><th>Acertos</th><th></th></tr>
+    ${us.map(u => { const st = statsAluno(u.id); return `<tr><td>${esc(u.nome)}</td><td>${esc(u.email)}</td><td>${st.simulados}</td><td>${pct(st.ac, st.resp)}%</td>
+      <td class="row"><a class="btn sec pq" href="#/admin/estudantes/${u.id}">Ver</a>
+      <button class="btn sec pq" onclick="resetSenha('${u.id}')">Nova senha</button>
+      <button class="btn perigo pq" onclick="delAluno('${u.id}')">Excluir</button></td></tr>`; }).join("")}</table>` : `<div class="empty">Nenhum estudante cadastrado.</div>`}</div>`;
+}
+function resetSenha(id){ const s = prompt("Nova senha para o estudante (mín. 6 caracteres):"); if(!s || s.length < 6) return;
+  hash(s).then(h => { const us = usuarios(); us.find(u => u.id === id).hash = h; Store.set("usuarios", us); toast("Senha redefinida."); }); }
+function delAluno(id){ if(!confirm("Excluir este estudante e todo o histórico dele? Não pode ser desfeito.")) return;
+  Store.set("usuarios", usuarios().filter(u => u.id !== id)); Store.set("resultados", resultados().filter(r => r.userId !== id));
+  Store.set("notifs", notifs().filter(n => n.userId !== id)); render(); }
+
+function aQuestoes(){
+  return `<h1>Questões</h1>
+  <p class="muted">As imagens devem estar na pasta <b>${esc(CONFIG.pastaQuestoes)}</b> com o nome <b>${esc(CONFIG.padraoNome)}</b>. Alterações aqui valem para os próximos simulados (resultados já registrados não mudam).</p>
+  <div class="card tw"><table><tr><th>Nº</th><th>Ano</th><th>Arquivo esperado</th><th>Gabarito</th><th>Assunto</th><th>Imagem</th></tr>
+  ${QS.map(q => `<tr class="qrow mini"><td><b>${q.n}</b></td>
+    <td><input type="number" min="1998" max="2100" value="${q.ano}" onchange="editQ(${q.n},'ano',+this.value)"></td>
+    <td class="small">${esc(nomeArq(q))}</td>
+    <td><select onchange="editQ(${q.n},'gab',this.value)">${LETRAS.map(L => `<option ${q.gab===L?'selected':''}>${L}</option>`).join("")}</select></td>
+    <td><select onchange="editQ(${q.n},'assunto',this.value)">${BL.map(b => `<option value="${b.id}" ${q.assunto===b.id?'selected':''}>${esc(b.nome)}</option>`).join("")}</select></td>
+    <td><img src="${urlImg(q)}" alt="" onclick="previewQ(${q.n})" style="cursor:zoom-in" onerror="this.outerHTML='<span class=&quot;pill r&quot;>não encontrada</span>'"></td></tr>`).join("")}
+  </table></div>`;
+}
+function editQ(n, campo, v){ const q = QS.find(x => x.n === n); q[campo] = v; salvarDados(); toast("Salvo."); if(campo === "ano") render(); }
+function previewQ(n){ const q = QS.find(x => x.n === n); modal(`<div class="row sp"><h3>${esc(nomeArq(q))}</h3><button class="btn sec pq" onclick="fechaModal()">✕</button></div><img style="max-width:100%" src="${urlImg(q)}">`); }
+
+function aVideos(){
+  return `<h1>Vídeo-aulas</h1>
+  <p class="muted">Cole links do YouTube. Marque como indisponível qualquer link quebrado (ele deixa de ser recomendado — RN12) e confirme a verificação ao menos a cada 30 dias (RNF11).</p>
+  ${BL.map((b, bi) => `<div class="card" style="margin-bottom:16px">
+    <div class="row sp"><h2 style="margin:0">${b.icone} ${esc(b.nome)} <span class="small muted">(id: ${esc(b.id)})</span></h2>
+      <div class="row"><button class="btn sec pq" onclick="renBloco(${bi})">Renomear</button><button class="btn perigo pq" onclick="delBloco(${bi})">Excluir bloco</button></div></div>
+    ${b.videos.length ? `<div class="tw"><table style="margin-top:10px"><tr><th>Título</th><th>Link</th><th>Status</th><th>Verificado</th><th></th></tr>
+    ${b.videos.map((v, vi) => { const vencido = !v.verificado || (new Date() - new Date(v.verificado)) / 864e5 > 30; return `<tr>
+      <td>${esc(v.titulo)}</td><td class="small"><a href="${esc(v.url)}" target="_blank" rel="noopener">abrir ↗</a>${ytId(v.url) ? "" : ` <span class="pill r">link inválido</span>`}</td>
+      <td><span class="pill ${v.ok===false?'r':'g'}">${v.ok===false?'indisponível':'ativo'}</span></td>
+      <td class="small">${v.verificado || '—'} ${vencido ? `<span class="pill y">verificar</span>` : ""}</td>
+      <td class="row"><button class="btn sec pq" onclick="verVid(${bi},${vi})">✔ Verificado hoje</button>
+        <button class="btn sec pq" onclick="togVid(${bi},${vi})">${v.ok===false?'Reativar':'Marcar indisponível'}</button>
+        <button class="btn perigo pq" onclick="delVid(${bi},${vi})">Remover</button></td></tr>`; }).join("")}</table></div>` : `<div class="empty" style="margin:10px 0">Nenhum vídeo neste bloco.</div>`}
+    <form class="row mini" style="margin-top:10px" onsubmit="return addVid(event,${bi})">
+      <input type="text" placeholder="Título da aula" required style="flex:1;min-width:160px" name="t"><input type="url" placeholder="https://www.youtube.com/watch?v=..." required style="flex:2;min-width:200px" name="u">
+      <button class="btn pq">+ Adicionar</button></form></div>`).join("")}
+  <div class="card"><h3>Novo bloco de conteúdo</h3><form class="row mini" onsubmit="return addBloco(event)">
+    <input type="text" name="i" placeholder="Ícone (emoji)" style="max-width:130px"><input type="text" name="n" placeholder="Nome do conteúdo (ex.: Logaritmos)" required style="flex:1;min-width:200px"><button class="btn pq">Criar bloco</button></form></div>`;
+}
+function addVid(e, bi){ e.preventDefault(); const f = e.target, url = f.u.value.trim();
+  if(!ytId(url)){ toast("Link do YouTube inválido."); return false; }
+  BL[bi].videos.push({ titulo:f.t.value.trim(), url, ok:true, verificado:hoje() }); salvarDados(); render(); toast("Vídeo adicionado."); return false; }
+const verVid = (b,v) => { BL[b].videos[v].verificado = hoje(); salvarDados(); render(); };
+const togVid = (b,v) => { const x = BL[b].videos[v]; x.ok = x.ok === false; salvarDados(); render(); };
+const delVid = (b,v) => { if(confirm("Remover este vídeo?")){ BL[b].videos.splice(v,1); salvarDados(); render(); } };
+function addBloco(e){ e.preventDefault(); const f = e.target, nome = f.n.value.trim();
+  let id = nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || uid();
+  if(bloco(id)) id += "-" + Math.random().toString(36).slice(2,5);
+  BL.push({ id, nome, icone:f.i.value.trim() || "📘", videos:[] }); salvarDados(); render(); toast("Bloco criado."); return false; }
+function renBloco(i){ const n = prompt("Novo nome:", BL[i].nome); if(n && n.trim()){ BL[i].nome = n.trim(); salvarDados(); render(); } }
+function delBloco(i){ const b = BL[i], usa = QS.filter(q => q.assunto === b.id).length;
+  if(!confirm(`Excluir o bloco "${b.nome}" e seus vídeos?` + (usa ? `\n\nAtenção: ${usa} questão(ões) usam este assunto e ficarão sem classificação.` : ""))) return;
+  BL.splice(i,1); salvarDados(); render(); }
+
+function aConfig(){
+  return `<h1>Configurações</h1>
+  <div class="grid g2">
+  <div class="card"><h2>Backup dos dados</h2>
+    <p class="muted small">Exporta estudantes, resultados, avisos, questões e vídeos em um arquivo JSON. Como esta versão não usa banco de dados, os dados ficam no navegador — faça backups.</p>
+    <div class="row"><button class="btn" onclick="exportar()">⬇ Exportar tudo</button>
+    <label class="btn sec" style="cursor:pointer">⬆ Importar<input type="file" accept="application/json" hidden onchange="importar(this)"></label></div></div>
+  <div class="card"><h2>Gerar código dos vídeos e questões</h2>
+    <p class="muted small">Gera o trecho para colar nas constantes <code>QUESTOES_PADRAO</code> e <code>BLOCOS_PADRAO</code> do HTML, tornando suas edições permanentes no arquivo.</p>
+    <button class="btn" onclick="gerarCodigo()">Gerar código</button></div>
+  <div class="card"><h2>Alterar senha do administrador</h2>
+    <form onsubmit="return trocaSenha(event)"><label class="f">Nova senha (mín. 6)</label><input type="password" id="ns" minlength="6" required autocomplete="new-password">
+    <button class="btn" style="margin-top:12px">Salvar</button></form></div>
+  <div class="card"><h2>Zona de risco</h2><p class="muted small">Apaga todos os dados locais (alunos, resultados, avisos e edições).</p>
+    <button class="btn perigo" onclick="limparTudo()">Apagar tudo</button></div></div>`;
+}
+const CHAVES = ["usuarios","resultados","notifs","overrides","admin"];
+function baixar(nome, txt, tipo="application/json"){ const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], {type:tipo})); a.download = nome; a.click(); }
+function exportar(){ const d = {}; CHAVES.forEach(k => d[k] = Store.get(k, null)); baixar(`ifenem-backup-${hoje()}.json`, JSON.stringify(d, null, 2)); }
+function importar(inp){ const f = inp.files[0]; if(!f) return; const r = new FileReader();
+  r.onload = () => { try{ const d = JSON.parse(r.result); CHAVES.forEach(k => { if(d[k] != null) Store.set(k, d[k]); }); render(); toast("Backup importado."); }catch(e){ toast("Arquivo inválido."); } };
+  r.readAsText(f); }
+function gerarCodigo(){
+  const q = QS.map(x => `  [${x.ano}, "${x.gab}", "${x.assunto}"]`).join(",\n");
+  const b = "[\n" + BL.map(x => `  { id:${JSON.stringify(x.id)}, nome:${JSON.stringify(x.nome)}, icone:${JSON.stringify(x.icone)}, videos:[\n` +
+      x.videos.map(v => `      { titulo:${JSON.stringify(v.titulo)}, url:${JSON.stringify(v.url)}${v.ok===false?", ok:false":""} }`).join(",\n") + `\n  ]}`).join(",\n") + "\n]";
+  const txt = `const QUESTOES_PADRAO = [\n${q}\n];\n\nconst BLOCOS_PADRAO = ${b};`;
+  modal(`<div class="row sp"><h3>Código gerado</h3><button class="btn sec pq" onclick="fechaModal()">✕</button></div>
+    <textarea id="cod" style="width:100%;height:320px;font:12px monospace" readonly>${esc(txt)}</textarea>
+    <button class="btn" style="margin-top:10px" onclick="$('#cod').select();document.execCommand('copy');toast('Copiado!')">Copiar</button>`);
+}
+async function trocaSenha(e){ e.preventDefault(); Store.set("admin", { hash: await hash($("#ns").value) }); toast("Senha do administrador alterada."); e.target.reset(); return false; }
+function limparTudo(){ if(!confirm("Apagar TODOS os dados locais?")) return; CHAVES.forEach(k => Store.set(k, null)); sair("Dados apagados."); }
+
+/* ---------- Atalhos de teclado no simulado ---------- */
+document.addEventListener("keydown", e => {
+  if(!sim || location.hash !== "#/simulado" || $("#modal") || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) && e.target.type !== "radio") return;
+  const k = e.key.toUpperCase();
+  if(LETRAS.includes(k)) marcar(k); else if(e.key === "ArrowRight") navSim(sim.idx+1); else if(e.key === "ArrowLeft") navSim(sim.idx-1);
+});
+
+render();
+</script>
+</body>
+</html>
